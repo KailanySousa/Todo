@@ -35,13 +35,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var newTaskCrtl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         // Scaffold - faz com que o Widget assume o estilo de uma página
         appBar: AppBar(
-          title: Center(
-            child: Text("Todo List"),
+          title: TextFormField(
+            controller: newTaskCrtl,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+            decoration: InputDecoration(
+              labelText: "Nova Tarefa",
+              labelStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
         body: ListView.builder(
