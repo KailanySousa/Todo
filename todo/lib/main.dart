@@ -40,14 +40,18 @@ class _HomePageState extends State<HomePage> {
   // método para adicionar um item a lista
   void add() {
     if (newTaskCrtl.text.isEmpty) return;
-
     setState(() {
       widget.items.add(
         Item(title: newTaskCrtl.text, done: false),
       );
     });
-
     newTaskCrtl.clear(); // limpando o input de "Nova Tarefa"
+  }
+
+  void remove(int index) {
+    setState(() {
+      widget.items.removeAt(index);
+    });
   }
 
   @override
@@ -75,15 +79,23 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (BuildContext context, int index) {
           // função para definir como os items serão montados na tela
           final item = widget.items[index];
-          return CheckboxListTile(
-            // criando lista com checkbox
-            title: Text(item.title),
+          return Dismissible(
             key: Key(item.title),
-            value: item.done,
-            onChanged: (value) {
-              setState(() {
-                item.done = value;
-              });
+            background: Container(
+              color: Colors.red.withOpacity(0.2),
+            ),
+            child: CheckboxListTile(
+              // criando lista com checkbox
+              title: Text(item.title),
+              value: item.done,
+              onChanged: (value) {
+                setState(() {
+                  item.done = value;
+                });
+              },
+            ),
+            onDismissed: (direction) {
+              remove(index)
             },
           );
         },
