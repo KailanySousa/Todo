@@ -26,9 +26,9 @@ class HomePage extends StatefulWidget {
   // método construtor
   HomePage() {
     items = [];
-    items.add(Item(title: "Item 1", done: false));
-    items.add(Item(title: "Item 2", done: true));
-    items.add(Item(title: "Item 3", done: false));
+    items.add(Item(title: "Dormir", done: false));
+    items.add(Item(title: "Acordar", done: true));
+    items.add(Item(title: "Levantar", done: false));
   }
   @override
   _HomePageState createState() => _HomePageState();
@@ -48,7 +48,14 @@ class _HomePageState extends State<HomePage> {
           itemCount: widget.items.length, // tamanho da lista
           itemBuilder: (BuildContext context, int index) {
             // função para definir como os items serão montados na tela
-            return Text(widget.items[index].title);
+            final item = widget.items[index];
+            return CheckboxListTile(
+              // criando lista com checkbox
+              title: Text(item.title),
+              key: Key(item.title),
+              value: item.done,
+              onChanged: (value) {},
+            );
           },
         ));
   }
