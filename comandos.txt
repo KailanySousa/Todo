@@ -1,0 +1,8 @@
+flutter doctor -> ver informações
+flutter devices -> listar os devices conectados
+flutter run -> caso tenha apenas um device conectado irá rodar o app
+flutter run -d {id_device} -> caso tenha mais de um device para rodar indicando o id do aparelho 
+r -> hot-reload na aplicação sem perder o estado
+shift + r -> hot-restart na aplicação 
+
+https://javiercbk.github.io/json_to_dart/ -> cria as funções para converter os dados em json e para resgatar os dados de um json de acordo com os atributos desejados
