@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/models/item.dart'; // referência do layout a ser utlizado na aplicação (android ou ios);
 
 void main() {
@@ -26,9 +28,6 @@ class HomePage extends StatefulWidget {
   // método construtor
   HomePage() {
     items = [];
-    items.add(Item(title: "Dormir", done: false));
-    items.add(Item(title: "Acordar", done: true));
-    items.add(Item(title: "Levantar", done: false));
   }
   @override
   _HomePageState createState() => _HomePageState();
@@ -46,12 +45,39 @@ class _HomePageState extends State<HomePage> {
       );
     });
     newTaskCrtl.clear(); // limpando o input de "Nova Tarefa"
+    save();
   }
 
   void remove(int index) {
     setState(() {
       widget.items.removeAt(index);
+      save();
     });
+  }
+
+  // Future declara a função como uma Promise
+  Future load() async {
+    var prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString('data');
+
+    if (data != null) {
+      Iterable decoded = jsonDecode(data);
+      List<Item> result = decoded.map((e) => Item.fromJson(e)).toList();
+
+      setState(() {
+        widget.items = result;
+      });
+    }
+  }
+
+  save() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('data', jsonEncode(widget.items));
+  }
+
+  // método construtor
+  _HomePageState() {
+    load();
   }
 
   @override
@@ -91,11 +117,12 @@ class _HomePageState extends State<HomePage> {
               onChanged: (value) {
                 setState(() {
                   item.done = value;
+                  save();
                 });
               },
             ),
             onDismissed: (direction) {
-              remove(index)
+              remove(index);
             },
           );
         },
